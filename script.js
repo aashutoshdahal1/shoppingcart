@@ -4,6 +4,7 @@ let carticon = document.querySelector(".carticon");
 let sidebar = document.querySelector(".sidebar");
 let sidebarclosebtn = document.querySelector(".sidebar__closebtn");
 let shopItemHtml = document.querySelector(".app__productcontainer");
+let sidebarContainerHtml = document.querySelector(".sidebar__itemcontainer");
 let carts = [];
 carticon.addEventListener("click", () => {
   sidebar.classList.toggle("hide");
@@ -61,17 +62,16 @@ shopItemHtml.addEventListener("click", (event) => {
 
 let addToCart = (productId) => {
   let positionofproductincarts = carts.findIndex((value) => {
-    return value.product_id == productId;
+    return value.id == productId;
   });
   if (carts.length <= 0) {
     carts.push({
-      product_id: productId,
+      id: productId,
       quantity: 1,
     });
   } else if (positionofproductincarts < 0) {
-    alert();
     carts.push({
-      product_id: productId,
+      id: productId,
       quantity: 1,
     });
   } else {
@@ -79,4 +79,53 @@ let addToCart = (productId) => {
       carts[positionofproductincarts].quantity + 1;
   }
   console.log(carts);
+  addCartDataToSidebar();
+};
+
+let addCartDataToSidebar = () => {
+  sidebarContainerHtml.innerHTML = "";
+
+  if (carts.length > 0) {
+    carts.forEach((cart) => {
+      let productDatabaseIndex = productList.findIndex((data) => {
+        return data.id == cart.id;
+      });
+      console.log(productDatabaseIndex);
+
+      let { name, price, image } = productData[productDatabaseIndex];
+      let sidebarHtml = `     <div class="sidebar__item">
+        <img src="${image}" alt="" />
+
+        <div class="sidebar__item-details">
+          <h2 class="sidebar__item-title">${name}</h2>
+
+          <span class="sidebar__item-price">$${price * cart.quantity}</span>
+
+          <div class="sidebar__item-btn">
+            <button id="decrement">-</button>
+            <span class="sidebar__item-quantity">${cart.quantity}</span>
+            <button id="increment">+</button>
+          </div>
+        </div>
+        <div class="sidebar__item-delete">
+          <svg
+            class="w-6 h-6 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>`;
+      sidebarContainerHtml.innerHTML += sidebarHtml;
+    });
+  }
 };
