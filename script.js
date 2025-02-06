@@ -1,11 +1,131 @@
-let carticon = document.querySelector(".carticon")
-let sidebar  = document.querySelector(".sidebar")
-let sidebarclosebtn = document.querySelector(".sidebar__closebtn")
-carticon.addEventListener('click',()=>{
-  
-    sidebar.classList.toggle('hide')
-})
+import { productData } from "./products.js";
+let productList = productData;
+let carticon = document.querySelector(".carticon");
+let sidebar = document.querySelector(".sidebar");
+let sidebarclosebtn = document.querySelector(".sidebar__closebtn");
+let shopItemHtml = document.querySelector(".app__productcontainer");
+let sidebarContainerHtml = document.querySelector(".sidebar__itemcontainer");
+let carts = [];
+carticon.addEventListener("click", () => {
+  sidebar.classList.toggle("hide");
+});
 
-sidebarclosebtn.addEventListener('click',()=>{
-sidebar.classList.toggle('hide')
-})
+sidebarclosebtn.addEventListener("click", () => {
+  sidebar.classList.toggle("hide");
+});
+
+const shopGenerator = () => {
+  shopItemHtml.innerHTML = "";
+  if (productList.length > 0) {
+    productList.forEach((product) => {
+      let { name, price, image, id } = product;
+      let htmlData = `
+<div class="app__productcontainer-item" id ="${id}">
+  <img src="${image}" alt="" />
+  <p class="app__productcontainer-item-name">${name}</p>
+  <div class="app__productcontainer-item-price">
+    <p>$${price}</p>
+  </div>
+  <div class="app__productcontainer-item-btn">
+    Add To Cart
+    <svg
+      class="w-6 h-6 text-gray-800 dark:text-white"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M14 7h-4v3a1 1 0 0 1-2 0V7H6a1 1 0 0 0-.997.923l-.917 11.924A2 2 0 0 0 6.08 22h11.84a2 2 0 0 0 1.994-2.153l-.917-11.924A1 1 0 0 0 18 7h-2v3a1 1 0 1 1-2 0V7Zm-2-3a2 2 0 0 0-2 2v1H8V6a4 4 0 0 1 8 0v1h-2V6a2 2 0 0 0-2-2Z"
+        clip-rule="evenodd"
+      />
+    </svg>
+  </div>
+</div>`;
+
+      shopItemHtml.innerHTML += htmlData;
+    });
+  }
+};
+shopGenerator();
+shopItemHtml.addEventListener("click", (event) => {
+  if (event.target.classList.contains("app__productcontainer-item-btn")) {
+    console.log(event.target.parentElement);
+
+    let productId = event.target.parentElement.id;
+    addToCart(productId);
+  }
+});
+
+let addToCart = (productId) => {
+  let positionofproductincarts = carts.findIndex((value) => {
+    return value.id == productId;
+  });
+  if (carts.length <= 0) {
+    carts.push({
+      id: productId,
+      quantity: 1,
+    });
+  } else if (positionofproductincarts < 0) {
+    carts.push({
+      id: productId,
+      quantity: 1,
+    });
+  } else {
+    carts[positionofproductincarts].quantity =
+      carts[positionofproductincarts].quantity + 1;
+  }
+  console.log(carts);
+  addCartDataToSidebar();
+};
+
+let addCartDataToSidebar = () => {
+  sidebarContainerHtml.innerHTML = "";
+
+  if (carts.length > 0) {
+    carts.forEach((cart) => {
+      let productDatabaseIndex = productList.findIndex((data) => {
+        return data.id == cart.id;
+      });
+      console.log(productDatabaseIndex);
+
+      let { name, price, image } = productData[productDatabaseIndex];
+      let sidebarHtml = `     <div class="sidebar__item">
+        <img src="${image}" alt="" />
+
+        <div class="sidebar__item-details">
+          <h2 class="sidebar__item-title">${name}</h2>
+
+          <span class="sidebar__item-price">$${price * cart.quantity}</span>
+
+          <div class="sidebar__item-btn">
+            <button id="decrement">-</button>
+            <span class="sidebar__item-quantity">${cart.quantity}</span>
+            <button id="increment">+</button>
+          </div>
+        </div>
+        <div class="sidebar__item-delete">
+          <svg
+            class="w-6 h-6 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>`;
+      sidebarContainerHtml.innerHTML += sidebarHtml;
+    });
+  }
+};
