@@ -6,6 +6,7 @@ let sidebarclosebtn = document.querySelector(".sidebar__closebtn");
 let shopItemHtml = document.querySelector(".app__productcontainer");
 let sidebarContainerHtml = document.querySelector(".sidebar__itemcontainer");
 let carts = [];
+let carticonnumberhtml = document.querySelector(".carticon__number");
 carticon.addEventListener("click", () => {
   sidebar.classList.toggle("hide");
 });
@@ -83,14 +84,22 @@ let addToCart = (productId) => {
 };
 
 let addCartDataToSidebar = () => {
-  sidebarContainerHtml.innerHTML = "";
+  let totalQuantity = carts
+    .map((element) => {
+      return element.quantity;
+    })
+    .reduce((c, a) => {
+      return c + a;
+    }, 0);
+  carticonnumberhtml.innerHTML = totalQuantity;
+  console.log(totalQuantity);
 
+  sidebarContainerHtml.innerHTML = "";
   if (carts.length > 0) {
     carts.forEach((cart) => {
       let productDatabaseIndex = productList.findIndex((data) => {
         return data.id == cart.id;
       });
-      console.log(productDatabaseIndex);
 
       let { name, price, image } = productData[productDatabaseIndex];
       let sidebarHtml = `     <div class="sidebar__item">
