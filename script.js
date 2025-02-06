@@ -4,6 +4,7 @@ let carticon = document.querySelector(".carticon");
 let sidebar = document.querySelector(".sidebar");
 let sidebarclosebtn = document.querySelector(".sidebar__closebtn");
 let shopItemHtml = document.querySelector(".app__productcontainer");
+let carts = [];
 carticon.addEventListener("click", () => {
   sidebar.classList.toggle("hide");
 });
@@ -16,10 +17,9 @@ const shopGenerator = () => {
   shopItemHtml.innerHTML = "";
   if (productList.length > 0) {
     productList.forEach((product) => {
-      let { name, price, image } = product;
-      console.log(name);
+      let { name, price, image, id } = product;
       let htmlData = `
-<div class="app__productcontainer-item">
+<div class="app__productcontainer-item" id ="${id}">
   <img src="${image}" alt="" />
   <p class="app__productcontainer-item-name">${name}</p>
   <div class="app__productcontainer-item-price">
@@ -50,3 +50,33 @@ const shopGenerator = () => {
   }
 };
 shopGenerator();
+shopItemHtml.addEventListener("click", (event) => {
+  if (event.target.classList.contains("app__productcontainer-item-btn")) {
+    console.log(event.target.parentElement);
+
+    let productId = event.target.parentElement.id;
+    addToCart(productId);
+  }
+});
+
+let addToCart = (productId) => {
+  let positionofproductincarts = carts.findIndex((value) => {
+    return value.product_id == productId;
+  });
+  if (carts.length <= 0) {
+    carts.push({
+      product_id: productId,
+      quantity: 1,
+    });
+  } else if (positionofproductincarts < 0) {
+    alert();
+    carts.push({
+      product_id: productId,
+      quantity: 1,
+    });
+  } else {
+    carts[positionofproductincarts].quantity =
+      carts[positionofproductincarts].quantity + 1;
+  }
+  console.log(carts);
+};
