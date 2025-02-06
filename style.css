@@ -76,6 +76,13 @@ header {
 .app__productcontainer-item img {
   width: 100%;
 }
+.app__productcontainer-item img:hover {
+  transform: scale(1.04);
+  -webkit-transform: scale(1.04);
+  -moz-transform: scale(1.04);
+  -ms-transform: scale(1.04);
+  -o-transform: scale(1.04);
+}
 .app__productcontainer-item {
   display: flex;
   flex-direction: column;
@@ -99,4 +106,8 @@ header {
   -moz-transition: all 0.2s ease-in;
   -ms-transition: all 0.2s ease-in;
   -o-transition: all 0.2s ease-in;
+}
+.app__productcontainer-item-btn{
+    display: flex;
+    align-items: center;
 }
