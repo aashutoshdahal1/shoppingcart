@@ -1,11 +1,13 @@
-let carticon = document.querySelector(".carticon")
-let sidebar  = document.querySelector(".sidebar")
-let sidebarclosebtn = document.querySelector(".sidebar__closebtn")
-carticon.addEventListener('click',()=>{
-  
-    sidebar.classList.toggle('hide')
-})
+import { productData } from "./products.js";
+console.log(productData);
+let carticon = document.querySelector(".carticon");
+let sidebar = document.querySelector(".sidebar");
+let sidebarclosebtn = document.querySelector(".sidebar__closebtn");
 
-sidebarclosebtn.addEventListener('click',()=>{
-sidebar.classList.toggle('hide')
-})
+carticon.addEventListener("click", () => {
+  sidebar.classList.toggle("hide");
+});
+
+sidebarclosebtn.addEventListener("click", () => {
+  sidebar.classList.toggle("hide");
+});
