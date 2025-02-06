@@ -3,4 +3,48 @@
   font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+body {
+  color: #333;
+}
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 25px 9%;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgb(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 99;
+}
+.logo {
+  font-size: 2rem;
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+}
+.carticon {
+  position: relative;
+  cursor: pointer;
+}
+.carticon__number {
+  position: absolute;
+  top: -6px;
+  right: -12px;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
 }
