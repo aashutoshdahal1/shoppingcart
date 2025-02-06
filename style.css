@@ -116,7 +116,7 @@ header {
 .sidebar {
   position: fixed;
   top: 0;
-  right: 0;
+  right: -150%;
   width: 360px;
   height: 100%;
   background-color: #ffffff;
@@ -124,6 +124,11 @@ header {
   padding: 65px 20px 40px;
   z-index: 999;
   overflow: auto;
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
+  -o-transition: 0.5s;
 }
 .sidebar__closebtn {
   position: absolute;
@@ -164,20 +169,25 @@ header {
   margin-left: 20px;
   cursor: pointer;
 }
-.sidebar__item-btn{
-    border: 1px solid grey;
-    display: flex;
-    justify-content: space-between;
+.sidebar__item-btn {
+  border: 1px solid grey;
+  display: flex;
+  justify-content: space-between;
 }
-.sidebar__item-btn #increment ,#decrement{
-    width: 40%;
-    background: none;
-    border: none;
-cursor: pointer;
+.sidebar__item-btn #increment,
+#decrement {
+  width: 40%;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 .sidebar__item-btn #increment {
-    border-left: 1px solid grey;
+  border-left: 1px solid grey;
 }
 .sidebar__item-btn #decrement {
-    border-right: 1px solid grey;
+  border-right: 1px solid grey;
+}
+
+.hide {
+  right: 0;
 }
