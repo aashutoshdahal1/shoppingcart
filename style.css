@@ -88,6 +88,7 @@ header {
   flex-direction: column;
   align-items: center;
 }
+.sidebar__total-buynow,
 .app__productcontainer-item-btn {
   background-color: #353432;
   color: white;
@@ -99,6 +100,7 @@ header {
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
 }
+.sidebar__total-buynow:hover,
 .app__productcontainer-item-btn:hover {
   background-color: var(--theme);
   transition: all 0.2s ease-in;
@@ -107,7 +109,7 @@ header {
   -ms-transition: all 0.2s ease-in;
   -o-transition: all 0.2s ease-in;
 }
-.app__productcontainer-item-btn{
-    display: flex;
-    align-items: center;
+.app__productcontainer-item-btn {
+  display: flex;
+  align-items: center;
 }
