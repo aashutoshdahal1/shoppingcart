@@ -6,6 +6,7 @@ let sidebarclosebtn = document.querySelector(".sidebar__closebtn");
 let shopItemHtml = document.querySelector(".app__productcontainer");
 let sidebarContainerHtml = document.querySelector(".sidebar__itemcontainer");
 let carts = [];
+let localsavedata = [];
 let carticonnumberhtml = document.querySelector(".carticon__number");
 carticon.addEventListener("click", () => {
   sidebar.classList.toggle("hide");
@@ -81,6 +82,11 @@ let addToCart = (productId) => {
   }
   console.log(carts);
   addCartDataToSidebar();
+  addCartToLocalStorage();
+};
+
+let addCartToLocalStorage = () => {
+  localStorage.setItem("cart", JSON.stringify(carts));
 };
 
 let addCartDataToSidebar = () => {
@@ -138,3 +144,15 @@ let addCartDataToSidebar = () => {
     });
   }
 };
+function getdata() {
+  if (localStorage.getItem("cart")) {
+    let data = JSON.parse(localStorage.getItem("cart")) || [];
+    data.forEach((e, i) => {
+      data[i].id = Number(e.id);
+    });
+    carts = data;
+    addCartDataToSidebar();
+    console.log(data);
+  }
+}
+getdata();
