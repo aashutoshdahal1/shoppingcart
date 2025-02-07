@@ -106,9 +106,9 @@ let addCartDataToSidebar = () => {
       let productDatabaseIndex = productList.findIndex((data) => {
         return data.id == cart.id;
       });
-
-      let { name, price, image } = productData[productDatabaseIndex];
-      let sidebarHtml = `     <div class="sidebar__item">
+      if (productDatabaseIndex >= 0) {
+        let { name, price, image, id } = productData[productDatabaseIndex];
+        let sidebarHtml = `     <div class="sidebar__item">
         <img src="${image}" alt="" />
 
         <div class="sidebar__item-details">
@@ -116,7 +116,7 @@ let addCartDataToSidebar = () => {
 
           <span class="sidebar__item-price">$${price * cart.quantity}</span>
 
-          <div class="sidebar__item-btn">
+          <div class="sidebar__item-btn" id="${id}">
             <button id="decrement">-</button>
             <span class="sidebar__item-quantity">${cart.quantity}</span>
             <button id="increment">+</button>
@@ -140,19 +140,54 @@ let addCartDataToSidebar = () => {
           </svg>
         </div>
       </div>`;
-      sidebarContainerHtml.innerHTML += sidebarHtml;
+
+        sidebarContainerHtml.innerHTML += sidebarHtml;
+      }
     });
   }
 };
-function getdata() {
-  if (localStorage.getItem("cart")) {
-    let data = JSON.parse(localStorage.getItem("cart")) || [];
-    data.forEach((e, i) => {
-      data[i].id = Number(e.id);
-    });
-    carts = data;
-    addCartDataToSidebar();
-    console.log(data);
+// function getdata() {
+//   if (localStorage.getItem("cart")) {
+//     let data = JSON.parse(localStorage.getItem("cart")) || [];
+//     data.forEach((e, i) => {
+//       data[i].id = Number(e.id);
+//     });
+//     carts = data;
+//     addCartDataToSidebar();
+//     console.log(data);
+//   }
+// }
+// getdata();
+
+sidebarContainerHtml.addEventListener("click", (event) => {
+  let element = event.target;
+  let selectitemid = element.parentElement.id;
+
+  if (element.id == "increment") {
+    sidebarPlusMinusOperation(selectitemid, "plus");
+  } else if (element.id == "decrement") {
+    sidebarPlusMinusOperation(selectitemid, "minus");
   }
-}
-getdata();
+});
+let sidebarPlusMinusOperation = (id, operation) => {
+  let indexincart = carts.findIndex((value) => {
+    return value.id == id;
+  });
+
+  if (indexincart >= 0) {
+    if (operation == "plus") {
+      addToCart(id);
+    } else if (operation == "minus") {
+      if (carts[indexincart].quantity > 0) {
+        carts[indexincart].quantity = carts[indexincart].quantity - 1;
+        console.log("last", carts);
+        addToCart(id);
+      } else {
+        console.log(indexincart);
+        carts.splice(indexincart, 1);
+        addToCart(id);
+        console.log("new", carts);
+      }
+    }
+  }
+};
