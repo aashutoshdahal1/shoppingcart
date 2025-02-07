@@ -89,6 +89,7 @@ let addCartToLocalStorage = () => {
   localStorage.setItem("cart", JSON.stringify(carts));
 };
 
+let totalpricehtml = document.querySelector(".sidebar__total-price");
 let addCartDataToSidebar = () => {
   let totalQuantity = carts
     .map((element) => {
@@ -97,6 +98,14 @@ let addCartDataToSidebar = () => {
     .reduce((c, a) => {
       return c + a;
     }, 0);
+
+  let totalPrice = carts.reduce((sum, item) => {
+    let product = productList.find((p) => p.id == item.id);
+    return sum + (product ? product.price * item.quantity : 0);
+  }, 0);
+  totalpricehtml.innerHTML = `Total $${totalPrice}`;
+  console.log("total price", totalPrice);
+
   carticonnumberhtml.innerHTML = totalQuantity;
   sidebarContainerHtml.innerHTML = "";
   if (carts.length > 0) {
