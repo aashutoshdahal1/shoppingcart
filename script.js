@@ -98,8 +98,6 @@ let addCartDataToSidebar = () => {
       return c + a;
     }, 0);
   carticonnumberhtml.innerHTML = totalQuantity;
-  console.log(totalQuantity);
-
   sidebarContainerHtml.innerHTML = "";
   if (carts.length > 0) {
     carts.forEach((cart) => {
@@ -122,7 +120,7 @@ let addCartDataToSidebar = () => {
             <button id="increment">+</button>
           </div>
         </div>
-        <div class="sidebar__item-delete">
+        <div class="sidebar__item-delete" id="${id}">
           <svg
             class="w-6 h-6 text-gray-800 dark:text-white"
             aria-hidden="true"
@@ -146,18 +144,18 @@ let addCartDataToSidebar = () => {
     });
   }
 };
-// function getdata() {
-//   if (localStorage.getItem("cart")) {
-//     let data = JSON.parse(localStorage.getItem("cart")) || [];
-//     data.forEach((e, i) => {
-//       data[i].id = Number(e.id);
-//     });
-//     carts = data;
-//     addCartDataToSidebar();
-//     console.log(data);
-//   }
-// }
-// getdata();
+function getdata() {
+  if (localStorage.getItem("cart")) {
+    let data = JSON.parse(localStorage.getItem("cart")) || [];
+    data.forEach((e, i) => {
+      data[i].id = Number(e.id);
+    });
+    carts = data;
+    addCartDataToSidebar();
+    console.log(data);
+  }
+}
+getdata();
 
 sidebarContainerHtml.addEventListener("click", (event) => {
   let element = event.target;
@@ -168,7 +166,20 @@ sidebarContainerHtml.addEventListener("click", (event) => {
   } else if (element.id == "decrement") {
     sidebarPlusMinusOperation(selectitemid, "minus");
   }
+  if (element.parentElement.classList.contains("sidebar__item-delete")) {
+    DeleteSidebarData(element.parentElement.id);
+  }
 });
+const DeleteSidebarData = (id) => {
+  let findindexincarts = carts.findIndex((e, i) => {
+    return id == e.id;
+  });
+  console.log("delete", findindexincarts);
+  carts.splice(findindexincarts, 1);
+  addCartDataToSidebar();
+  addCartToLocalStorage();
+};
+
 let sidebarPlusMinusOperation = (id, operation) => {
   let indexincart = carts.findIndex((value) => {
     return value.id == id;
@@ -177,16 +188,17 @@ let sidebarPlusMinusOperation = (id, operation) => {
   if (indexincart >= 0) {
     if (operation == "plus") {
       addToCart(id);
+      addCartToLocalStorage();
     } else if (operation == "minus") {
       if (carts[indexincart].quantity > 0) {
         carts[indexincart].quantity = carts[indexincart].quantity - 1;
-        console.log("last", carts);
-        addToCart(id);
+        addCartDataToSidebar();
+        addCartToLocalStorage();
+        console.log(carts);
       } else {
         console.log(indexincart);
         carts.splice(indexincart, 1);
-        addToCart(id);
-        console.log("new", carts);
+        addCartDataToSidebar();
       }
     }
   }
